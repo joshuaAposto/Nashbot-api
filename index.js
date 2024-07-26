@@ -5,12 +5,12 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/gpt3', async (req, res) => {
+app.get('/nashbot3', async (req, res) => {
     let { prompt } = req.query;
 
     if (!prompt) {
         return res.status(400).json({
-            error: 'Please provide a prompt query parameter using the format: /gpt3?prompt=<text>. For example, /gpt3?prompt=hi'
+            error: 'Please provide a prompt query parameter using the format: /nashbot3?prompt=<text>. For example, /nashbot3?prompt=hi'
         });
     }
 
