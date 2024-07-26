@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 1rem 0;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .container {
+            width: 80%;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+        .section {
+            margin-bottom: 2rem;
+        }
+        .endpoint pre, .example-prompts pre, .response pre {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+            overflow-x: auto;
+        }
+        .api-tester input, .api-tester textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .api-tester button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .api-tester button:hover {
+            background-color: #0056b3;
+        }
+        .result pre {
+            background-color: #e9ecef;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .footer {
+            text-align: center;
+            padding: 1rem 0;
+            background-color: #f1f1f1;
+            color: #555;
+            border-top: 1px solid #e0e0e0;
+        }
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .important-info, .faq {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .faq {
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+        .faq h3 {
+            color: #007bff;
+        }
+        .faq p {
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>API Documentation</h1>
+    </header>
+    <div class="container">
+        <div class="section endpoint">
+            <h2>Endpoint: /gpt3</h2>
+            <p>Retrieve responses from NashBot based on prompts.</p>
+            <pre><code>GET /gpt3?prompt=&lt;text&gt;</code></pre>
+            <h3>Parameters</h3>
+            <ul>
+                <li><strong>prompt</strong> (string): The prompt text to query NashBot.</li>
+            </ul>
+            <h3>Response Example</h3>
+            <pre><code>{
+  "status": 200,
+  "creator": "NashBot",
+  "result": {
+    "reply": "NashBot is an AI chatbot designed to provide intelligent responses and integrate with various services. It handles diverse queries, offers context-aware responses, and ensures data security and privacy."
+  },
+  "team": "Developed by Nash"
+}</code></pre>
+        </div>
+        <div class="section api-tester">
+            <h2>API Tester</h2>
+            <p>Test the /gpt3 endpoint directly from this page.</p>
+            <label for="api-url">API URL:</label>
+            <input type="text" id="api-url" placeholder="Enter the API URL">
+            <label for="prompt">Prompt:</label>
+            <input type="text" id="prompt" placeholder="Enter your prompt">
+            <button onclick="testAPI()">Test API</button>
+            <div class="result" id="result"></div>
+        </div>
+        <div class="section important-info">
+            <h2>Important Information</h2>
+            <p>No API key is required to use this API. For feedback or support, please visit the following link:</p>
+            <a href="https://www.facebook.com/profile.php?id=61560621817740" target="_blank">Feedback Link</a>
+        </div>
+        <div class="section faq">
+            <h2>Frequently Asked Questions (FAQ)</h2>
+            <div class="faq-item">
+                <h3>1. What is NashBot?</h3>
+                <p>NashBot is an advanced AI chatbot designed to provide intelligent responses and assist with a wide range of tasks. It integrates with various services to enhance its capabilities.</p>
+            </div>
+            <div class="faq-item">
+                <h3>2. How do I use NashBot?</h3>
+                <p>To use NashBot, send a prompt to the /gpt3 endpoint and receive a response based on your input. Check the API Tester section for hands-on testing.</p>
+            </div>
+            <div class="faq-item">
+                <h3>3. Do I need an API key?</h3>
+                <p>No API key is required to use NashBot. You can start using the API immediately by following the documentation.</p>
+            </div>
+            <div class="faq-item">
+                <h3>4. What if I encounter errors?</h3>
+                <p>If you encounter errors, check the error message provided and review your request for any issues. Consult the documentation for troubleshooting tips.</p>
+            </div>
+            <div class="faq-item">
+                <h3>5. How can I provide feedback?</h3>
+                <p>For feedback, please visit our <a href="https://www.facebook.com/profile.php?id=61560621817740" target="_blank">feedback page</a>. We welcome your suggestions and comments.</p>
+            </div>
+            <div class="faq-item">
+                <h3>6. How frequently is NashBot updated?</h3>
+                <p>NashBot receives regular updates to improve performance and add new features. Check the documentation for the latest changes and updates.</p>
+            </div>
+            <div class="faq-item">
+                <h3>7. Can I integrate NashBot with other services?</h3>
+                <p>Yes, NashBot can be integrated with various services. Refer to the integration guide in the documentation for detailed instructions.</p>
+            </div>
+            <div class="faq-item">
+                <h3>8. Where can I find more resources?</h3>
+                <p>For additional resources and support, visit our <a href="https://www.facebook.com/profile.php?id=61560621817740" target="_blank">support page</a>.</p>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 NashBot. All rights reserved. <a href="https://www.facebook.com/profile.php?id=61560621817740" target="_blank">Feedback</a></p>
+    </footer>
+    <script>
+        function testAPI() {
+            const apiUrl = document.getElementById('api-url').value;
+            const prompt = document.getElementById('prompt').value;
+            fetch(`${apiUrl}?prompt=${encodeURIComponent(prompt)}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = `<pre>Error: ${error.message}</pre>`;
+                });
+        }
+    </script>
+</body>
+</html>
