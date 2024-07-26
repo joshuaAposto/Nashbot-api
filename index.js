@@ -15,7 +15,7 @@ if (!fs.existsSync(convoFilePath)) {
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/nashbotv4', async (req, res) => {
+app.get('/nashbot3', async (req, res) => {
     let { prompt } = req.query;
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const lowerCasePrompt = (prompt || "").toLowerCase();
