@@ -45,14 +45,21 @@ const getResponseFromApi = async (conversationContext, prompt) => {
     }
 };
 
-app.get('/nashbot4', async (req, res) => {
+const createResponse = (reply) => ({
+    status: 200,
+    creator: 'NashBot',
+    result: {
+        reply: reply || 'Sorry, I couldn\'t understand your request.'
+    },
+    team: 'Developed by Nash'
+});
+
+app.get('/nashbot3', async (req, res) => {
     const { prompt } = req.query;
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
     if (!prompt) {
-        return res.status(400).json({
-            error: 'Please provide a prompt query parameter using the format: /nashbot4?prompt=<text>. For example, /nashbot4?prompt=hi'
-        });
+        return res.status(400).json(createResponse('Please provide a prompt query parameter using the format: /nashbot3?prompt=<text>. For example, /nashbot3?prompt=hi'));
     }
 
     if (prompt.length > 10000) {
@@ -170,9 +177,7 @@ app.get('/nashbot4', async (req, res) => {
             userHistory.lastPrompt = prompt;
             userHistory.newTopic = false;
         } catch (error) {
-            return res.status(500).json({
-                error: 'An error occurred while processing your request.'
-            });
+            return res.status(500).json(createResponse('An error occurred while processing your request.'));
         }
     } else {
         userHistory.context.push(`User: ${prompt}`, `AI: ${response}`);
@@ -180,7 +185,7 @@ app.get('/nashbot4', async (req, res) => {
     }
 
     saveConversationHistory(conversationHistory);
-    res.json({ reply: response });
+    res.json(createResponse(response));
 });
 
 app.listen(port, () => {
