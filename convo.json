@@ -94,5 +94,19 @@
     ],
     "lastPrompt": "?prompt=Hi",
     "newTopic": false
+  },
+  "158.62.37.47, 10.81.4.71": {
+    "context": [
+      {
+        "prompt": "?prompt=Hi"
+      }
+    ],
+    "lastPrompt": "?prompt=Who is naahbot",
+    "newTopic": false
+  },
+  "158.62.37.47, 10.81.3.77": {
+    "context": [],
+    "lastPrompt": "?prompt=Can you tell me about nashbot",
+    "newTopic": false
   }
 }
