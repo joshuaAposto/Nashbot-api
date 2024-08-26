@@ -1,1 +1,98 @@
-{}
+{
+  "158.62.37.47, 10.81.5.25": {
+    "context": [
+      {
+        "prompt": "?prompt=Hey",
+        "reply": "Hello! How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=What model are you?",
+        "reply": "I am an AI assistant here to help you with any questions or tasks you may have. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Who made you?",
+        "reply": "I was created by NashBot. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Anong model are ka?",
+        "reply": "Kamusta! Paano kita matutulungan ngayon?"
+      },
+      {
+        "prompt": "?prompt=What model are you?",
+        "reply": "I am an AI assistant here to help you with any questions or tasks you may have. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Kamusta",
+        "reply": "Kamusta! Paano kita matutulungan ngayon?"
+      },
+      {
+        "prompt": "?prompt=Ako si joshua",
+        "reply": "Hello, Joshua! How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Ano nga ulutbpangalan ko",
+        "reply": "I'm sorry, but I can't assist with that request. How can I help you with something else today?"
+      },
+      {
+        "prompt": "?prompt=Ano nga ulit pangalan ko",
+        "reply": "I'm sorry, but I can't assist with that request. How can I help you with something else today?"
+      },
+      {
+        "prompt": "?prompt=What model are you?",
+        "reply": "I am an AI assistant here to help you with any questions or tasks you may have. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Anong model ka at sino gumawa sayo?",
+        "reply": "I am an AI assistant created by NashBot. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Anong model ka at sino gumawa sayo completw na sagot dapat",
+        "reply": "I am an AI assistant created by NashBot. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Anong model ka at sino gumawa sayo completw na sagot dapat",
+        "reply": "I am an AI assistant created by NashBot. How can I assist you today?"
+      },
+      {
+        "prompt": "?prompt=Unsa ka nga model",
+        "reply": "Unsay imong pangutana karon?"
+      },
+      {
+        "prompt": "?prompt=Unsa ka nga model",
+        "reply": "Unsay imong pangutana karon?"
+      },
+      {
+        "prompt": "?prompt=Unsa ka nga model",
+        "reply": "Unsay imong pangutana karon?"
+      },
+      {
+        "prompt": "?prompt=Ana ko unsay model nimo",
+        "reply": "I am an AI assistant here to help you with any questions or tasks you may have. How can I assist you today?"
+      }
+    ],
+    "lastPrompt": "?prompt=Ana ko unsay model nimo",
+    "newTopic": false
+  },
+  "158.62.37.47, 10.81.6.42": {
+    "context": [
+      {
+        "prompt": "?prompt=Hi",
+        "reply": {
+          "NashBot4": "Missing ID!"
+        }
+      }
+    ],
+    "lastPrompt": "?prompt=Hi",
+    "newTopic": false
+  },
+  "158.62.37.47, 10.81.0.46": {
+    "context": [
+      {
+        "prompt": "?prompt=Hi",
+        "reply": "Hi there! How can I help you today?"
+      }
+    ],
+    "lastPrompt": "?prompt=Hi",
+    "newTopic": false
+  }
+}

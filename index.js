@@ -13,16 +13,45 @@ if (!fs.existsSync(convoFilePath)) {
 }
 
 app.use(cors());
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/nashbot3', async (req, res) => {
-    let { prompt } = req.query;
+const getConversationHistory = () => {
+    return JSON.parse(fs.readFileSync(convoFilePath, 'utf8'));
+};
+
+const saveConversationHistory = (history) => {
+    fs.writeFileSync(convoFilePath, JSON.stringify(history, null, 2));
+};
+
+const getResponseFromApi = async (conversationContext, prompt, uid) => {
+    const apiPrompt = `${conversationContext}\n\nUser: ${prompt}\nAI:`;
+
+    try {
+        const apiResponse = await axios.get('https://deku-rest-api.gleeze.com/gpt4', {
+            params: { prompt: apiPrompt, uid }
+        });
+
+        let responseData = JSON.stringify(apiResponse.data)
+            .replace(/OpenAI|GPT|ChatGPT/gi, 'NashBot');
+
+        responseData = JSON.parse(responseData);
+        return responseData.gpt4;
+
+    } catch (error) {
+        console.error('API Request Error:', error);
+        throw new Error('An error occurred while fetching the response from the API.');
+    }
+};
+
+app.get('/nashbot4', async (req, res) => {
+    const { prompt } = req.query;
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const lowerCasePrompt = (prompt || "").toLowerCase();
+    const uid = ip;
 
     if (!prompt) {
         return res.status(400).json({
-            error: 'Please provide a prompt query parameter using the format: /nashbot3?prompt=<text>. For example, /nashbot3?prompt=hi'
+            error: 'Please provide a prompt query parameter using the format: /nashbot4?prompt=<text>. For example, /nashbot4?prompt=hi'
         });
     }
 
@@ -30,20 +59,26 @@ app.get('/nashbot3', async (req, res) => {
         prompt = prompt.substring(0, 10000);
     }
 
-    let conversationHistory = JSON.parse(fs.readFileSync(convoFilePath, 'utf8'));
-    if (!conversationHistory[ip]) {
-        conversationHistory[ip] = {
+    const conversationHistory = getConversationHistory();
+    if (!conversationHistory[uid]) {
+        conversationHistory[uid] = {
             context: [],
             lastPrompt: '',
             newTopic: false
         };
     }
 
-    const userHistory = conversationHistory[ip];
+    const userHistory = conversationHistory[uid];
 
-    function getResponse(prompt) {
-        const nashBotResponses = {
-    'what is NashBot': "NashBot is an advanced conversational AI designed to assist users with a wide range of queries and tasks.",
+    const defaultResponses = {
+        'what code are you': "NashBot is powered by advanced natural language processing technology, utilizing cutting-edge AI models.",
+        'who created you': "NashBot was created by Nash, a skilled developer focused on AI and machine learning.",
+        'what model are you': "I am based on the GPT-4 model, an advanced conversational AI developed by OpenAI.",
+        'what is your purpose': "NashBot's purpose is to assist users with information, answer questions, and provide support across various topics.",
+        'how can you help me': "NashBot can help you by providing answers to your questions, assisting with tasks, and offering information on a wide range of topics.",
+        'what can you do': "NashBot can engage in conversations, provide information, answer questions, and assist with various tasks as needed.",
+        'what is your training data': "NashBot has been trained on a diverse range of texts from the internet, including books, articles, and websites, to understand and generate human-like responses.",
+        'what is NashBot': "NashBot is an advanced conversational AI designed to assist users with a wide range of queries and tasks.",
     'how does NashBot work': "NashBot uses natural language processing to understand and respond to user queries intelligently.",
     'NashBot features': "NashBot offers features like natural language understanding, context-aware responses, and multi-platform support.",
     'NashBot setup guide': "To set up NashBot, follow the provided installation and configuration instructions carefully.",
@@ -628,104 +663,28 @@ app.get('/nashbot3', async (req, res) => {
     'nashbot service performance review guide': "Guide to reviewing NashBot's service performance includes metrics and methods for assessing its effectiveness in handling user queries."
     };
 
-    const joshuaApostolResponses = {
-    'who is joshua apostol': "Joshua Apostol is a web developer known for his expertise in creating innovative web applications and solutions.",
-    'what does joshua apostol do': "Joshua Apostol specializes in web development, focusing on creating functional and user-friendly web applications.",
-    'joshua apostol background': "Joshua Apostol has a background in web development and is skilled in various programming languages and technologies.",
-    'joshua apostol career': "Joshua Apostol's career includes working on various web development projects and contributing to the tech community.",
-    'joshua apostol expertise': "Joshua Apostol's expertise lies in web development, including front-end and back-end technologies.",
-    'joshua apostol achievements': "Joshua Apostol has achieved recognition for his work in web development and his contributions to technology.",
-    'joshua apostol skills': "Joshua Apostol possesses skills in web development, programming, and technology innovation.",
-    'joshua apostol projects': "Joshua Apostol has worked on various projects, showcasing his skills and expertise in web development.",
-    'joshua apostol work': "Joshua Apostol's work includes developing web applications, improving user experiences, and solving technical challenges.",
-    'joshua apostol portfolio': "Joshua Apostol's portfolio highlights his work and achievements in the field of web development.",
-    'joshua apostol contributions': "Joshua Apostol has made significant contributions to the tech industry through his work and projects.",
-    'joshua apostol education': "Joshua Apostol's education includes training and learning in web development and related technologies.",
-    'joshua apostol experience': "Joshua Apostol has extensive experience in web development and technology, working on various projects and applications.",
-    'joshua apostol role': "Joshua Apostol's role involves developing web solutions, creating innovative applications, and contributing to tech advancements.",
-    'joshua apostol technology': "Joshua Apostol is skilled in various technologies used in web development, including programming languages and frameworks.",
-    'joshua apostol skills list': "A list of Joshua Apostol's skills includes web development, programming, and technology innovation.",
-    'joshua apostol career path': "Joshua Apostol's career path involves progressing through various roles and projects in web development and technology.",
-    'joshua apostol achievements list': "A list of Joshua Apostol's achievements includes notable projects and contributions to the tech industry.",
-    'joshua apostol professional background': "Joshua Apostol's professional background includes his experience, skills, and contributions to web development.",
-    'joshua apostol contact': "For professional inquiries or collaborations with Joshua Apostol, please contact him through his [contact page](https://www.facebook.com/profile.php?id=61560621817740).",
-    'joshua apostol social media': "Joshua Apostol shares updates about his work and projects on his social media profiles.",
-    'joshua apostol networking': "Joshua Apostol engages in networking within the tech community to collaborate and share knowledge.",
-    'joshua apostol online presence': "Joshua Apostol maintains an online presence to showcase his work and connect with other professionals.",
-    'joshua apostol collaboration': "Joshua Apostol collaborates with other tech professionals on various projects and initiatives.",
-    'joshua apostol web developer': "As a web developer, Joshua Apostol focuses on creating and optimizing web applications and solutions.",
-    'joshua apostol technology skills': "Joshua Apostol's technology skills include proficiency in programming languages and web development tools.",
-    'joshua apostol project management': "Joshua Apostol manages web development projects, ensuring successful outcomes and innovation.",
-    'joshua apostol programming skills': "Joshua Apostol's programming skills include expertise in languages and techniques used in web development.",
-    'joshua apostol development projects': "Joshua Apostol's development projects showcase his skills and expertise in creating innovative web solutions.",
-    'joshua apostol work portfolio': "Joshua Apostol's work portfolio includes examples of his projects and achievements in web development.",
-    'joshua apostol career achievements': "Joshua Apostol's career achievements include recognition for his work and contributions to web development.",
-    'joshua apostol project highlights': "Highlights of Joshua Apostol's projects include notable work and innovations in web development.",
-    'joshua apostol tech skills': "Joshua Apostol's tech skills encompass various programming languages and technologies used in web development.",
-    'joshua apostol expertise list': "A list of Joshua Apostol's expertise includes his skills and experience in web development and technology.",
-    'joshua apostol technology expertise list': "A list of Joshua Apostol's technology expertise includes his proficiency in various programming languages and frameworks.",
-    'joshua apostol professional skills': "Joshua Apostol's professional skills include web development, project management, and technology innovation.",
-    'joshua apostol industry contributions': "Joshua Apostol's industry contributions include his work on web development projects and his impact on technology.",
-    };
+    const lowerCasePrompt = prompt.toLowerCase();
+    let response = defaultResponses[lowerCasePrompt] || null;
 
-        for (let key in nashBotResponses) {
-            if (lowerCasePrompt.includes(key)) {
-                return { reply: nashBotResponses[key] };
-            }
-        }
-
-        for (let key in joshuaApostolResponses) {
-            if (lowerCasePrompt.includes(key)) {
-                return { reply: joshuaApostolResponses[key] };
-            }
-        }
-
-        return null;
-    }
-
-    let response = getResponse(prompt);
-
-    if (response) {
-        userHistory.context.push({ prompt, reply: response.reply });
-        userHistory.lastPrompt = prompt;
-        userHistory.newTopic = false;
-        fs.writeFileSync(convoFilePath, JSON.stringify(conversationHistory, null, 2));
-
-        return res.json({
-            status: 200,
-            creator: 'NashBot',
-            result: response
-        });
-    }
-
-    try {
+    if (!response) {
         const conversationContext = userHistory.context.map(entry => `${entry.prompt}\n${entry.reply}`).join('\n\n');
-        const apiPrompt = `${conversationContext}\n\nUser: ${prompt}\nAI:`;
-
-        const apiResponse = await axios.get('https://joshweb.click/new/gpt-3_5-turbo', {
-            params: { prompt: apiPrompt }
-        });
-
-        let responseData = JSON.stringify(apiResponse.data)
-            .replace(/OpenAI|GPT|ChatGPT/gi, 'NashBot');
-
-        responseData = JSON.parse(responseData);
-        const reply = responseData.result.reply;
-
-        userHistory.context.push({ prompt, reply });
-        userHistory.lastPrompt = prompt;
-        userHistory.newTopic = false;
-        fs.writeFileSync(convoFilePath, JSON.stringify(conversationHistory, null, 2));
-
-        res.json({
-            status: 200,
-            creator: 'NashBot',
-            result: { reply }
-        });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'An error occurred while processing your request. Please try again later.' });
+        try {
+            response = await getResponseFromApi(conversationContext, prompt, uid);
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     }
+
+    userHistory.context.push({ prompt, reply: response });
+    userHistory.lastPrompt = prompt;
+    userHistory.newTopic = false;
+    saveConversationHistory(conversationHistory);
+
+    return res.json({
+        status: 200,
+        creator: 'NashBot',
+        result: { reply: response }
+    });
 });
 
 app.listen(port, () => {
